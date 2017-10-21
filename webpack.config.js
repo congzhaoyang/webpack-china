@@ -5,7 +5,7 @@ const webpack = require('webpack')
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 //const postcssImport = require('postcss-import');
 const cssnext = require('postcss-cssnext')
-var ExtractTextPlugin = require("extract-text-webpack-plugin")
+const ExtractTextPlugin = require("extract-text-webpack-plugin")
 
 module.exports = {
   entry: {
@@ -17,13 +17,13 @@ module.exports = {
     hot: true
   },
   plugins: [
-    new CleanWebpackPlugin(['dist']),
+    //new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
-      title: 'output management'
+      title: '切图仔专用webpack'
     }),
     new webpack.HotModuleReplacementPlugin(),
     new UglifyJSPlugin(),
-    new ExtractTextPlugin("styles.sss")
+    new ExtractTextPlugin('[name].css')
   ],
   output: {
     filename: '[name].bundle.js',
@@ -37,10 +37,41 @@ module.exports = {
         loader: "style-loader!css-loader!postcss-loader?parser=sugarss"
       },
       {
+        test:   /\.css/,
+        loader: "style-loader!css-loader?importLoaders=1!postcss-loader"
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          { loader: 'style-loader', options: { sourceMap: true } },
+          { loader: 'css-loader', options: { sourceMap: true } },
+          { loader: 'postcss-loader', options: { sourceMap: true } },
+          { loader: 'sass-loader', options: { sourceMap: true } }
+        ]
+      },
+      {
+        test: /\.less$/,
+        use: [
+          { loader: 'style-loader', options: { sourceMap: true } },
+          { loader: 'css-loader', options: { sourceMap: true } },
+          { loader: 'postcss-loader', options: { sourceMap: true } },
+          { loader: 'less-loader', options: { sourceMap: true } }
+        ]
+      },
+      {
         test: /\.(png|svg|jpg|gif)$/,
         use: [
           'file-loader'
         ]
+      },
+      { 
+        test: /\.js$/,
+        //exclude: path.resolve(__dirname, '/node_modules/'),
+        include: path.resolve(__dirname, '/src/'),
+        loader: "babel-loader",
+        query: {
+          "presets":["latest"]
+        },
       }
     ]
   }

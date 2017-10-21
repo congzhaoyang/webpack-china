@@ -1,5 +1,8 @@
-import _ from 'lodash';
-import './style.sss'
+import _ from 'lodash'
+//import './style.sss'
+//import './style.css'
+//import './style.less'
+import './common.css'
 import Icon from './user60.jpg'
 import printMe from './print'
 import { cube } from './math'
