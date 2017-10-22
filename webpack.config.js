@@ -8,6 +8,7 @@ const cssnext = require('postcss-cssnext')
 const ExtractTextPlugin = require("extract-text-webpack-plugin")
 
 module.exports = {
+  context: __dirname,
   entry: {
     app: './src/index.js'
   },
@@ -28,7 +29,7 @@ module.exports = {
   output: {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/'
+    //publicPath: '/'
   },
   module: {
     rules: [
@@ -51,12 +52,13 @@ module.exports = {
       },
       {
         test: /\.less$/,
-        use: [
-          { loader: 'style-loader', options: { sourceMap: true } },
-          { loader: 'css-loader', options: { sourceMap: true } },
-          { loader: 'postcss-loader', options: { sourceMap: true } },
-          { loader: 'less-loader', options: { sourceMap: true } }
-        ]
+        // use: [
+        //   { loader: 'style-loader', options: { sourceMap: true } },
+        //   { loader: 'css-loader', options: { sourceMap: true } },
+        //   { loader: 'postcss-loader', options: { sourceMap: true } },
+        //   { loader: 'less-loader', options: { sourceMap: true } }
+        // ]
+        loader:'style-loader!css-loader!postcss-loader!less-loader'
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
@@ -72,6 +74,22 @@ module.exports = {
         query: {
           "presets":["latest"]
         },
+      },
+      {
+        test: /\.(html)$/,
+        use: {
+          loader: 'html-loader',
+          options: {
+            attrs: [':data-src']
+          }
+        }
+      },
+      {
+        test: /\.(png|jpg|gif|svg)$/,
+        loaders: [
+          'url-loader?limit=20000&name=asset/[name]-[hash: 5].[ext]',
+          'image-webpack-loader'
+        ]
       }
     ]
   }
