@@ -18,18 +18,26 @@ module.exports = {
     hot: true
   },
   plugins: [
-    //new CleanWebpackPlugin(['dist']),
+    // new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
-      title: '切图仔专用webpack'
+      title: 'webpack demo'
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new UglifyJSPlugin(),
+    // new UglifyJSPlugin(),
     new ExtractTextPlugin('[name].css')
   ],
   output: {
-    filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'dist'),
-    //publicPath: '/'
+    // filename: '[name].bundle.js',
+    filename: 'bundle.js',
+    // path: path.resolve(__dirname, 'dist'),
+    //path: path.resolve(__dirname, 'dist'),
+    path: __dirname + '/dist'
+    // publicPath: '/'
+  },
+  watchOptions: {
+    aggregateTimeout: 300,
+    poll: 1000,
+    ignored: /node_modules/
   },
   module: {
     rules: [
@@ -68,7 +76,7 @@ module.exports = {
       },
       { 
         test: /\.js$/,
-        //exclude: path.resolve(__dirname, '/node_modules/'),
+        exclude: path.resolve(__dirname, '/node_modules/'),
         include: path.resolve(__dirname, '/src/'),
         loader: "babel-loader",
         query: {
@@ -84,13 +92,16 @@ module.exports = {
           }
         }
       },
-      {
-        test: /\.(png|jpg|gif|svg)$/,
-        loaders: [
-          'url-loader?limit=20000&name=asset/[name]-[hash: 5].[ext]',
-          'image-webpack-loader'
-        ]
+      { 
+        test: /\.txt$/, use: 'raw-loader' 
       }
+      // {
+      //   test: /\.(png|jpg|gif|svg)$/,
+      //   loaders: [
+      //     'url-loader?limit=20000&name=asset/[name]-[hash:5].[ext]',
+      //     'image-webpack-loader'
+      //   ]
+      // }
     ]
   }
 };
